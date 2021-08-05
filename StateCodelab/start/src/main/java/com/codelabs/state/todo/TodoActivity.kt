@@ -49,13 +49,15 @@ class TodoActivity : AppCompatActivity() {
 
     @Composable
     private fun TodoActivityScreen(todoViewModel: TodoViewModel) {
-        // .observeAsState observes a LiveData<T> and converts it into a State<T> object so Compose can react to value changes（观察 LiveData<T> 并将其转换为 State<T> 对象，以便 Compose 可以对值更改做出反应）
-        val items: List<TodoItem> by todoViewModel.todoItems.observeAsState(initial = listOf())// listOf() 是给一个默认值，当返回为空，会给一个空数组
 
         TodoScreen(
-            items = items,
-            onAddItem = { todoViewModel.addItem(it) },
-            onRemoveItem = { todoViewModel.removeItem(it) }
+            items = todoViewModel.todoItems,
+            currentlyEditing = todoViewModel.currentEditItem,
+            onAddItem = todoViewModel::addItem,
+            onRemoveItem = todoViewModel::removeItem,
+            onStartEdit = todoViewModel::onEditItemSelected,
+            onEditItemChange = todoViewModel::onEditItemChange,
+            onEditDone = todoViewModel::onEditDone
         )
     }
 
